@@ -19,6 +19,23 @@
             <artifactId>guava</artifactId>
             <version>${guava.ver}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.sf.proguard/proguard-base -->
+        <dependency>
+            <groupId>net.sf.proguard</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>6.2.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.wvengen/proguard-maven-plugin >
+        <dependency>
+            <groupId>com.github.wvengen</groupId>
+            <artifactId>proguard-maven-plugin</artifactId>
+            <version>2.2.0</version>
+        </dependency-->
+
+
+
     </dependencies>
 
     <build>
@@ -60,6 +77,33 @@
                             <mainClass>Main</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>5.0</proguardVersion>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <options>
+                        <option>-keep public class Main {public static void main(java.lang.String[]);}</option>
+                        <option>-dontwarn</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
                 </configuration>
             </plugin>
 
